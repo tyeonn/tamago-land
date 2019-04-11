@@ -1,0 +1,27 @@
+{
+  "name": "tamago_land",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack -w --mode=development"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tyeonn/tamago-land.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tyeonn/tamago-land/issues"
+  },
+  "homepage": "https://github.com/tyeonn/tamago-land#readme",
+  "dependencies": {
+    "css-loader": "^2.1.1",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0"
+  }
+}
