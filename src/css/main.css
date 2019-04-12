@@ -8,9 +8,12 @@ body {
   justify-content: center;
 }
 #main-canvas {
+  background: url("../images/background.png");
+  background-repeat: no-repeat;
+  background-size: 800px 600px;
   width: 800px;
-    height: 600px;
-    border: 1px solid black;
-    /* margin: 100px; */
-    margin-top: 200px;
+  height: 600px;
+  border: 1px solid black;
+  margin: 100px;
+  /* margin-top: 200px; */
 }
