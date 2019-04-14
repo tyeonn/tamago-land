@@ -1,26 +1,35 @@
-import Player from './player';
-import Map from './map';
+import Map from "./map";
+import Player from "./player";
 
 const canvas = document.getElementById("main-canvas");
 const ctx = canvas.getContext("2d");
-export const canvasWidth = 800;
-export const canvasHeight = 600;
+const canvasWidth = 800;
+const canvasHeight = 600;
 
+window.requestAnimationFrame =
+  window.requestAnimationFrame ||
+  window.mozRequestAnimationFrame ||
+  window.webkitRequestAnimationFrame ||
+  window.msRequestAnimationFrame ||
+  function(f) {
+    return setTimeout(f, 1000 / 60);
+  };
 
-//  const tile = new Image();
-//  tile.src = "../src/images/tile.png";
-//  const tileWidth = 40;
-//  const tileHeight = 15;
-//  tile.onload = function() {
-//    ctx.drawImage(tile, 0, 0);
-//  };
-const map = new Map(ctx);
-map.drawFloor();
-map.drawLadder();
+const map = new Map(ctx, canvasWidth, canvasHeight);
+const player = new Player(ctx, canvasWidth, canvasHeight);
 
+document.addEventListener("keydown", player.keyDownHandler);
+document.addEventListener("keyup", player.keyUpHandler);
 
-// const player = new Player(ctx);
-
+const animate = () => {
+  ctx.clearRect(0,0,canvasWidth,canvasHeight);
+  map.render();
+  player.sprite.loop();
+  // player.sprite.update();
+  // player.sprite.render();
+  requestAnimationFrame(animate);
+};
+animate();
 // ctx.beginPath();
 // ctx.fillStyle = "black";
 // ctx.rect(0, canvas.height / 5, 40, 15);
@@ -29,4 +38,3 @@ map.drawLadder();
 // ctx.rect(0, (canvas.height * 4) / 5, 40, 15);
 // ctx.fill();
 // ctx.closePath();
-

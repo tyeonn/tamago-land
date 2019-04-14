@@ -1,21 +1,31 @@
-import { canvasWidth, canvasHeight } from "./index";
+
 class Map {
-  constructor(ctx) {
+  constructor(ctx,canvasWidth, canvasHeight) {
     this.ctx = ctx;
+    this.canvasWidth = canvasWidth;
+    this.canvasHeight = canvasHeight;
     this.tile = new Image();
     this.tile.src = "../src/images/tile.png";
     this.tileWidth = 40;
     this.tileHeight = 15;
-    this.createFloor = this.createFloor.bind(this);
     this.ladder = new Image();
     this.ladder.src = "../src/images/ladder.png";
     this.ladderWidth = 40;
     this.ladderHeight = 150;
     this.ladders = [];
+    this.drawFloor = this.drawFloor.bind(this);
+    this.createFloor = this.createFloor.bind(this);
+    this.drawLadder = this.drawLadder.bind(this);
   }
 
+  render() {
+
+    this.drawFloor();
+    this.drawLadder();
+  }
   drawFloor() {
-    this.tile.onload = () => this.createFloor();
+    // this.tile.onload = () => 
+    this.createFloor();
   }
   createFloor() {
     const missingTile = [
@@ -45,7 +55,7 @@ class Map {
     for (let col = 0; col < floorCol; col++) {
       for (let row = 0; row < floorRow; row++) {
         let tileX = col * this.tileWidth;
-        let tileY = (row + 1) * (canvasHeight / 5) - this.tileHeight;
+        let tileY = (row + 1) * (this.canvasHeight / 5) - this.tileHeight;
         this.floor[col][row].x = tileX;
         this.floor[col][row].y = tileY;
         if (!this.floor[col][row].missing) {
@@ -56,7 +66,7 @@ class Map {
   }
   drawLadder() {
     const ladderPos = [[2, 0], [8, 1], [14, 2], [2, 3], [11, 3]];
-    this.ladder.onload = () => {
+    // this.ladder.onload = () => {
       const ladderRow = 4;
       const ladderCol = 20;
       // this.ladders = [];
@@ -76,9 +86,9 @@ class Map {
           let ladX = col * this.ladderWidth;
           let ladY;
           if(row != 3){
-            ladY = (row + 1) * (canvasHeight / 5) - 45;
+            ladY = (row + 1) * (this.canvasHeight / 5) - 45;
           } else {
-            ladY = (row + 1) * (canvasHeight / 5) - 30;
+            ladY = (row + 1) * (this.canvasHeight / 5) - 30;
           }
           this.ladders[col][row].x = ladX;
           this.ladders[col][row].y = ladY;
@@ -87,7 +97,7 @@ class Map {
           }
         }
       }
-    };
+    // };
   }
 }
 export default Map;
