@@ -21,6 +21,8 @@ class Player {
     this.walkingRightImg.src = "../src/images/penguin_walk_right.png";
     // this.ticksPerFrame = 4;
     // this.numberOfFrames = 4;
+    this.jumpLimit = 50;
+    this.goDown = false;
     this.sprite = sprite({
       context: this.ctx,
       canvasWidth: this.canvasWidth,
@@ -46,7 +48,7 @@ class Player {
     this.stand = this.stand.bind(this);
   }
   keyDownHandler(e) {
-    debugger
+    // debugger
     if(e.key == "Right" || e.key == "ArrowRight") {
       this.rightPress = true;
       this.moveRight();
@@ -59,7 +61,7 @@ class Player {
     }else if(e.key == "Up" || e.key == "ArrowUp") {
       this.upPress = true;
       this.moveUp(e);
-    }else if(e.key =="Space"){
+    }else if(e.keyCode == 32){
       this.jumpPress = true;
       this.jump(e);
     }
@@ -78,7 +80,7 @@ class Player {
     }else if(e.key == "Up" || e.key == "ArrowUp") {
       this.upPress = false;
       // this.moveUp();
-    }else if(e.key =="Space"){
+    }else if(e.keyCode == 32){
       this.jumpPress = false;
       // this.jump();
     }
@@ -117,11 +119,25 @@ class Player {
   moveUp(e) {
 
   }
+
   moveDown(e) {
 
   }
-  jump(e) {
 
+  jump(e) {
+    if(this.jumpPress){
+      let initialY = this.sprite.dy;
+      // setInterval(() => {
+        if(this.sprite.dy > (this.sprite.dy - this.jumpLimit) ){
+          this.sprite.dy -=10;
+        }else if(this.sprite.dy < initialY){
+          // this.goDown = true;
+          this.sprite.dy +=10;
+        }
+  
+      // },20);
+      
+    }
   }
 
 }

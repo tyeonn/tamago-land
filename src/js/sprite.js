@@ -39,7 +39,7 @@ function sprite(options) {
   };
 
   that.update = () => {
-    debugger
+    // debugger
     tickCount += 1;
 
     if (tickCount > ticksPerFrame) {
