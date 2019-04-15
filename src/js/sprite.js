@@ -63,9 +63,9 @@ function sprite(options) {
   };
 
   that.loop = () => {
-    // requestAnimationFrame(that.loop);
     that.render();
     that.update();
+    // requestAnimationFrame(that.loop);
   };
 
   return that;

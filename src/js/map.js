@@ -5,11 +5,11 @@ class Map {
     this.canvasWidth = canvasWidth;
     this.canvasHeight = canvasHeight;
     this.tile = new Image();
-    this.tile.src = "../src/images/tile.png";
+    this.tile.src = "./src/images/tile.png";
     this.tileWidth = 40;
     this.tileHeight = 15;
     this.ladder = new Image();
-    this.ladder.src = "../src/images/ladder.png";
+    this.ladder.src = "./src/images/ladder.png";
     this.ladderWidth = 40;
     this.ladderHeight = 150;
     this.ladders = [];

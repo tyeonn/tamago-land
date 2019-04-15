@@ -6,19 +6,19 @@ class Player {
     this.canvasWidth = canvasWidth;
     this.canvasHeight = canvasHeight;
     this.standingImg = new Image();
-    this.standingImg.src = "../src/images/penguin_standing.png";
+    this.standingImg.src = "./src/images/penguin_standing.png";
     this.standingImgRight = new Image();
-    this.standingImgRight.src = "../src/images/penguin_standing_right.png";
+    this.standingImgRight.src = "./src/images/penguin_standing_right.png";
     this.climbingImg = new Image();
-    this.climbingImg.src = "../src/images/penguin_climb.png";
+    this.climbingImg.src = "./src/images/penguin_climb.png";
     this.feintLeftImg = new Image();
-    this.feintLeftImg.src = "../src/images/penguin_feint_left.png";
+    this.feintLeftImg.src = "./src/images/penguin_feint_left.png";
     this.feintRightImg = new Image();
-    this.feintRightImg.src = "../src/images/penguin_feint_right.png";
+    this.feintRightImg.src = "./src/images/penguin_feint_right.png";
     this.walkingLeftImg = new Image();
-    this.walkingLeftImg.src = "../src/images/penguin_walk_left.png";
+    this.walkingLeftImg.src = "./src/images/penguin_walk_left.png";
     this.walkingRightImg = new Image();
-    this.walkingRightImg.src = "../src/images/penguin_walk_right.png";
+    this.walkingRightImg.src = "./src/images/penguin_walk_right.png";
     // this.ticksPerFrame = 4;
     // this.numberOfFrames = 4;
     this.jumpLimit = 75;
@@ -32,7 +32,7 @@ class Player {
       image: this.standingImg,
       dx: this.canvasWidth - 80,
       dy: this.canvasHeight - 48,
-      ticksPerFrame: 5,
+      ticksPerFrame: 4,
       numberOfFrames: 4,
       standing: true,
       frameIndex: 0
@@ -49,7 +49,14 @@ class Player {
     this.jump = this.jump.bind(this);
     this.stand = this.stand.bind(this);
     this.keyMap = {};
+    // this.start = this.start.bind(this);
+    // this.start();
   }
+  // start(){
+  //   document.addEventListener("keydown", player.keyDownHandler);
+  //   document.addEventListener("keyup", player.keyUpHandler);
+
+  // }
   keyDownHandler(e) {
     // debugger
     if (e.key == "Right" || e.key == "ArrowRight") {
@@ -67,6 +74,9 @@ class Player {
     }else if (e.keyCode == 32) {
       this.jumpPress = true;
       this.jump(e);
+
+      // this.rightPress = true;
+      // this.moveRight();
     }
   }
 
@@ -132,13 +142,13 @@ class Player {
     let velX;
     if(this.rightPress){
       velX = 3;
-    }else if(this.leftPress){
+     }else if(this.leftPress){
       velX = -3;
     }else{
       velX = 0;
     }
-    // let velY = 1;
-    // let gravity = 1;
+    let velY = 1;
+    let gravity = 1;
     // let jumping = setInterval(() => {
     //   if(this.sprite.dy > initialY - this.jumpLimit){
     //     console.log(velY + "vel");
