@@ -22,7 +22,7 @@ In addition, this project will include:
 This app will consist of a single, centered screen and information about the game on the side. Game controls will include the arrow keys and the spacebar as well as a button to start and reset the game. The mute button and game instructions will be next to the screen. All the buttons except the mute button will fade away once the game starts. The links for Github and LinkedIn will be placed on the bottom.
 
 
-![wireframes](https://github.com/tyeonn/tamago-land/blob/master/wireframe.png)
+![wireframes](https://github.com/tyeonn/tamago-land/blob/master/src/images/wireframe.png)
 
 ### Architecture and Technologies
 
