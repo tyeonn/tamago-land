@@ -22,9 +22,11 @@ document.addEventListener("keydown", player.keyDownHandler);
 document.addEventListener("keyup", player.keyUpHandler);
 
 const animate = () => {
+
   ctx.clearRect(0,0,canvasWidth,canvasHeight);
   map.render();
   player.sprite.loop();
+  player.updatePos();
   // player.sprite.update();
   // player.sprite.render();
   requestAnimationFrame(animate);
