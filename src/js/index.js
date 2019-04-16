@@ -16,7 +16,7 @@ window.requestAnimationFrame =
   };
 
 const map = new Map(ctx, canvasWidth, canvasHeight);
-const player = new Player(ctx, canvasWidth, canvasHeight);
+const player = new Player(ctx, canvasWidth, canvasHeight, map);
 
 document.addEventListener("keydown", player.keyDownHandler);
 document.addEventListener("keyup", player.keyUpHandler);

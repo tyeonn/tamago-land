@@ -1,6 +1,5 @@
-
 class Map {
-  constructor(ctx,canvasWidth, canvasHeight) {
+  constructor(ctx, canvasWidth, canvasHeight) {
     this.ctx = ctx;
     this.canvasWidth = canvasWidth;
     this.canvasHeight = canvasHeight;
@@ -16,15 +15,24 @@ class Map {
     this.drawFloor = this.drawFloor.bind(this);
     this.createFloor = this.createFloor.bind(this);
     this.drawLadder = this.drawLadder.bind(this);
+    this.ladderRow = 4;
+    this.ladderCol = 20;
+    this.ladderPos = [[2, 0], [8, 1], [14, 2], [2, 3], [11, 3]];
+    this.floorLevelX = {
+      0: 600,
+      1: 465,
+      2: 345,
+      3: 225,
+      4: 105
+    };
   }
 
   render() {
-
     this.drawFloor();
     this.drawLadder();
   }
   drawFloor() {
-    // this.tile.onload = () => 
+    // this.tile.onload = () =>
     this.createFloor();
   }
   createFloor() {
@@ -65,39 +73,52 @@ class Map {
     }
   }
   drawLadder() {
-    const ladderPos = [[2, 0], [8, 1], [14, 2], [2, 3], [11, 3]];
+    this.ladderPos = [[2, 0], [8, 1], [14, 2], [2, 3], [11, 3]];
     // this.ladder.onload = () => {
-      const ladderRow = 4;
-      const ladderCol = 20;
-      // this.ladders = [];
-      for (let col = 0; col < ladderCol; col++) {
-        this.ladders[col] = [];
-        for (let row = 0; row < ladderRow; row++) {
-          this.ladders[col][row] = { x: 0, y: 0, missing: true };
+    this.ladderRow = 4;
+    this.ladderCol = 20;
+    // this.ladders = [];
+    for (let col = 0; col < this.ladderCol; col++) {
+      this.ladders[col] = [];
+      for (let row = 0; row < this.ladderRow; row++) {
+        this.ladders[col][row] = { x: 0, y: 0, missing: true };
+      }
+    }
+    this.ladderPos.forEach(
+      function(lad) {
+        this.ladders[lad[0]][lad[1]].missing = false;
+      }.bind(this)
+    );
+    for (let col = 0; col < this.ladderCol; col++) {
+      for (let row = 0; row < this.ladderRow; row++) {
+        let ladX = col * this.ladderWidth;
+        let ladY;
+        if (row != 3) {
+          ladY = (row + 1) * (this.canvasHeight / 5) - 45;
+        } else {
+          ladY = (row + 1) * (this.canvasHeight / 5) - 30;
+        }
+        this.ladders[col][row].x = ladX;
+        this.ladders[col][row].y = ladY;
+        if (!this.ladders[col][row].missing) {
+          this.ctx.drawImage(this.ladder, ladX, ladY);
         }
       }
-      ladderPos.forEach(
-        function(lad) {
-          this.ladders[lad[0]][lad[1]].missing = false;
-        }.bind(this)
-      );
-      for (let col = 0; col < ladderCol; col++) {
-        for (let row = 0; row < ladderRow; row++) {
-          let ladX = col * this.ladderWidth;
-          let ladY;
-          if(row != 3){
-            ladY = (row + 1) * (this.canvasHeight / 5) - 45;
-          } else {
-            ladY = (row + 1) * (this.canvasHeight / 5) - 30;
-          }
-          this.ladders[col][row].x = ladX;
-          this.ladders[col][row].y = ladY;
-          if (!this.ladders[col][row].missing) {
-            this.ctx.drawImage(this.ladder, ladX, ladY);
-          }
-        }
-      }
+    }
     // };
+  }
+
+  //Filter ladders that are not missing
+  displayedLadders() {
+    let lads= [];
+    for (let col = 0; col < this.ladderCol; col++) {
+      for (let row = 0; row < this.ladderRow; row++) {
+        if(!this.ladders[col][row].missing){
+          lads.push(this.ladders[col][row]);
+        }
+      }
+    }
+    return lads;
   }
 }
 export default Map;
