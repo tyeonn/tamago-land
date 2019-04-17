@@ -14,14 +14,14 @@
   
 </head>
 <body>
-  <iframe src="./src/songs/start_song.mp3" allow="autoplay" style="display:none"></iframe>
+  <!-- <iframe src="./src/songs/start_song.mp3" allow="autoplay" style="display:none"></iframe> -->
   <img id="logo" src="./src/images/logo.png" alt="">
   <img id="outer-background" src="./src/images/outer_background.gif" alt="">
   <div class="canvas-controls">
     <canvas id="main-canvas" width="800" height="600"></canvas>
     <div id="volume" >
-      <i class="fas fa-volume-up "></i>
-      <i class="fas fa-volume-mute hidden"></i>
+      <i id="vol-on" class="fas fa-volume-up "></i>
+      <i id="vol-off" class="fas fa-volume-mute hidden"></i>
     </div>
     <div class="movement-container">
       <h2>Instructions</h2>

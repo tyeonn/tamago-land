@@ -20,20 +20,21 @@ const map = new Map(ctx, canvasWidth, canvasHeight);
 const player = new Player(ctx, canvasWidth, canvasHeight, map);
 const mainSong = new Howl({
   src: ['./src/songs/main_song.mp3'],
-  autoplay: true,
+  // autoplay: true,
   loop: true,
   autoUnlock: true,
-
+  volume: 0.6
 });
 // const cxt = new AudioContext();
 // setTimeout(cxt.resume().then(mainSong.play()), 1000);
 mainSong.play();
 
-const unmute = document.getElementsByClassName("fa-volume-up");
-const mute = document.getElementsByClassName("fa-volume-mute");
+const unmute = document.getElementById("vol-on");
+const mute = document.getElementById("vol-off");
 const volume = document.querySelector("#volume");
 volume.addEventListener('click', () => {
-  mainSong.mute ? mainSong.mute(false) : mainSong.mute(true);
+  mainSong.mute() ? mainSong.mute(false) : mainSong.mute(true);
+  mainSong.playing() ? mainSong.pause() : mainSong.play();
   unmute.classList.toggle("hidden");
   mute.classList.toggle("hidden");
 });
