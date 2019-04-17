@@ -62,3 +62,6 @@ display: flex;
       height: 6%;
     width: 60%;
 }
+.hidden {
+  display: none;
+}

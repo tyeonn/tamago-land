@@ -1,5 +1,6 @@
 import Map from "./map";
 import Player from "./player";
+import {Howl, Howler} from 'howler';
 
 const canvas = document.getElementById("main-canvas");
 const ctx = canvas.getContext("2d");
@@ -17,7 +18,25 @@ window.requestAnimationFrame =
 
 const map = new Map(ctx, canvasWidth, canvasHeight);
 const player = new Player(ctx, canvasWidth, canvasHeight, map);
+const mainSong = new Howl({
+  src: ['./src/songs/main_song.mp3'],
+  autoplay: true,
+  loop: true,
+  autoUnlock: true,
 
+});
+// const cxt = new AudioContext();
+// setTimeout(cxt.resume().then(mainSong.play()), 1000);
+mainSong.play();
+
+const unmute = document.getElementsByClassName("fa-volume-up");
+const mute = document.getElementsByClassName("fa-volume-mute");
+const volume = document.querySelector("#volume");
+volume.addEventListener('click', () => {
+  mainSong.mute ? mainSong.mute(false) : mainSong.mute(true);
+  unmute.classList.toggle("hidden");
+  mute.classList.toggle("hidden");
+});
 document.addEventListener("keydown", player.keyDownHandler);
 document.addEventListener("keyup", player.keyUpHandler);
 
