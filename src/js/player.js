@@ -1,9 +1,11 @@
 import sprite from "./sprite";
 
 class Player {
-  constructor(ctx, canvasWidth, canvasHeight, map) {
+  constructor(ctx, canvasWidth, canvasHeight, map, changeState) {
+    this.changeState = changeState;
     this.map = map;
     this.ladders = [];
+    this.missingTiles = [];
     this.floorLevel = 0;
     this.ctx = ctx;
     this.canvasWidth = canvasWidth;
@@ -35,6 +37,7 @@ class Player {
       ticksPerFrame: 5,
       numberOfFrames: 4,
       standing: true,
+      feint: false,
       frameIndex: 0
     });
 
@@ -51,10 +54,13 @@ class Player {
     this.isJumping = false;
     //Prevent L, R while climbing
     this.isClimbing = false;
+    this.goingDown = false;
+    this.goingUp = false;
 
     this.jump = this.jump.bind(this);
     this.stand = this.stand.bind(this);
     this.checkLadder = this.checkLadder.bind(this);
+    this.feint = this.feint.bind(this);
     this.keys = [];
     this.nextFloorY = 0;
 
@@ -87,9 +93,8 @@ class Player {
   keyUpHandler(e) {
     if (e.key == "Right" || e.key == "ArrowRight") {
       this.rightPress = false;
-      if(!this.isClimbing){
+      if (!this.isClimbing) {
         this.stand("right");
-
       }
     }
     if (e.key == "Left" || e.key == "ArrowLeft") {
@@ -108,6 +113,14 @@ class Player {
       this.jumpPress = false;
     }
   }
+  stand(side) {
+    this.sprite.image =
+      side === "left" ? this.standingImg : this.standingImgRight;
+    this.sprite.width = 240;
+    this.sprite.standing = true;
+    this.sprite.frameIndex = 0;
+    this.sprite.numberOfFrames = 4;
+  }
   updatePos() {
     if (!this.isClimbing) {
       //RIGHT
@@ -117,7 +130,7 @@ class Player {
         this.sprite.width = 600;
         this.sprite.numberOfFrames = 10;
         this.sprite.standing = false;
-      } 
+      }
       // else if(!this.rightPress){
       //   this.stand("right");
       // }
@@ -130,17 +143,19 @@ class Player {
         this.sprite.numberOfFrames = 10;
         this.sprite.standing = false;
       }
-
     }
     //UP
     if (this.upPress && !this.isJumping) {
       console.log(this.isClimbing);
       let currLadder = this.checkLadder("up");
-      this.nextFloorY = this.map.floorLevelX[this.floorLevel + 1];
-      let playerLowerY = this.sprite.dy + 50;
       let playerUpperY = this.sprite.dy;
+      this.goingDown
+        ? (this.nextFloorY = this.map.floorLevelX[this.floorLevel])
+        : (this.nextFloorY = this.map.floorLevelX[this.floorLevel + 1]);
+      let playerLowerY = this.sprite.dy + 50;
       debugger;
       if (currLadder && playerLowerY > this.nextFloorY) {
+        // this.goingUp = true;
         this.isClimbing = true;
         this.sprite.dy -= 4;
         this.sprite.image = this.climbingImg;
@@ -151,24 +166,39 @@ class Player {
       } else if (playerUpperY <= this.nextFloorY) {
         // this.sprite.dy = this.map.floorLevelX[this.floorLevel + 1] + 50;
         this.isClimbing = false;
+        // this.goingUp = false;
         this.sprite.dy = this.nextFloorY - 48;
         console.log(this.sprite.dy);
         console.log(this.nextFloorY);
         console.log(this.nextFloorY - 48);
         this.stand("left");
+        // if(playerUpperY> this.floorLevel -45){
         this.floorLevel++;
+        // }
       }
     }
+
     // DOWN
     if (this.downPress && !this.isJumping) {
       let currLadder = this.checkLadder("down");
-      this.nextFloorY = this.floorLevel !== 0 ? 
-        this.map.floorLevelX[this.floorLevel - 1] : 
-        600;
+      // this.nextFloorY = this.goingUp ?
+      //   this.map.floorLevelX[this.floorLevel] :
+      this.nextFloorY =
+        this.floorLevel != 0 ? this.map.floorLevelX[this.floorLevel - 1] : 600;
+      console.log(this.floorLevel);
+      console.log("going up " + this.goingUp);
+      console.log("going down " + this.goingDown);
+      // this.goingUp
+      //   ? (this.nextFloorY = this.map.floorLevelX[this.floorLevel])
+      //   : (this.nextFloorY =
+      //       this.floorLevel != 0
+      //         ? this.map.floorLevelX[this.floorLevel - 1]
+      //         : 600);
       let playerLowerY = this.sprite.dy + 50;
       let playerUpperY = this.sprite.dy;
       debugger;
       if (currLadder && playerLowerY <= this.nextFloorY) {
+        this.goingDown = true;
         this.isClimbing = true;
         this.sprite.dy += 4;
         this.sprite.image = this.climbingImg;
@@ -176,10 +206,11 @@ class Player {
         this.sprite.numberOfFrames = 5;
         this.sprite.standing = false;
         console.log(playerLowerY + " " + this.nextFloorY);
-      } else if (playerUpperY >= this.nextFloorY-51) {
+      } else if (playerUpperY >= this.nextFloorY - 51) {
         // this.sprite.dy = this.map.floorLevelX[this.floorLevel + 1] + 50;
         debugger;
         this.isClimbing = false;
+        this.goingDown = false;
         this.sprite.dy = this.nextFloorY - 48;
         console.log(this.sprite.dy);
         console.log(this.nextFloorY);
@@ -198,28 +229,19 @@ class Player {
     let playerUpperY = this.sprite.dy;
     let playerLowerY = this.sprite.dy + 50;
     for (let lad of this.ladders) {
-      // console.log("playerCenter" +playerCenter);
-      // console.log("lad.x" + lad.x);
-      // console.log("lad.x+40" + lad.x+40);
-      // console.log("playerUpperY" + playerUpperY);
-      // console.log("playerlowery" + playerLowerY);
-      // console.log("lad.y" + lad.y);
-      // console.log("lad.y" + lad.y+150);
-      // debugger;
       if (action == "up") {
         if (
           playerCenter >= lad.x &&
           playerCenter <= lad.x + 40 &&
           playerUpperY >= lad.y - 15 &&
-          playerLowerY >= lad.y +10 &&
+          playerLowerY >= lad.y + 10 &&
           playerLowerY <= lad.y + 160
         ) {
           // debugger;
           // this.isClimbing = true;
           return lad;
         }
-      } 
-      else if (action == "down") {
+      } else if (action == "down") {
         if (
           playerCenter >= lad.x &&
           playerCenter <= lad.x + 40 &&
@@ -236,15 +258,6 @@ class Player {
     return null;
     // return this.isClimbing ? true : false;
   }
-  stand(side) {
-    this.sprite.image =
-      side === "left" ? this.standingImg : this.standingImgRight;
-    this.sprite.width = 240;
-    this.sprite.standing = true;
-    this.sprite.frameIndex = 0;
-    this.sprite.numberOfFrames = 4;
-  }
-
 
   jump(e) {
     if (this.jumpPress && !this.isJumping) {
@@ -280,66 +293,60 @@ class Player {
       }, 10);
     }
   }
-  // let jumping = setInterval(() => {
-  //   if (!this.goDown && this.sprite.dy > initialY - this.jumpLimit) {
-  //     if (this.sprite.dx < 0 || this.sprite.dx > this.canvasWidth - 60) {
-  //       this.sprite.dx += -velX;
-  //     } else {
-  //       this.sprite.dx += velX;
-  //     }
-  //     this.sprite.dy -= 4;
-  //   } else if (this.sprite.dy < initialY) {
-  //     this.goDown = true;
-  //     if (this.sprite.dx < 0 || this.sprite.dx > this.canvasWidth - 60) {
-  //       this.sprite.dx += -velX;
-  //     } else {
-  //       this.sprite.dx += velX;
-  //     }
-  //     this.sprite.dy += 4;
-  //   } else {
-  //     this.isJumping = false;
-  //     clearInterval(jumping);
-  //     this.goDown = false;
-  //   }
-  // }, 33);
-  // moveLeft() {
-  //   if (!this.leftPress) {
-  //     this.stand("left");
-  //   } else if (this.leftPress && this.sprite.dx > 0) {
-  //     this.sprite.dx -= 7;
-  //     this.sprite.image = this.walkingLeftImg;
-  //     this.sprite.width = 600;
-  //     this.sprite.numberOfFrames = 10;
-  //     this.sprite.standing = false;
-  //   }
-  // }
-  // moveRight() {
-  //   // let right;
-  //   // right = setInterval(() => {
-  //   //   if(this.keys.ArrowRight && !this.rightPress){
-  //   //     this.rightPress = true;
-  //   //     if (this.sprite.dx < this.canvasWidth - 60) {
-  //   //       this.sprite.dx += 7;
-  //   //       this.sprite.image = this.walkingRightImg;
-  //   //       this.sprite.width = 600;
-  //   //       this.sprite.numberOfFrames = 10;
-  //   //       this.sprite.standing = false;
-  //   //     }
-  //   //   }else{
-  //   //     this.rightPress = false;
-  //   //     clearInterval(right);
-  //   //   }
-  //   //   },10);
-  //   if (!this.rightPress) {
-  //     this.stand("right");
-  //   } else if (this.rightPress && this.sprite.dx < this.canvasWidth - 60) {
-  //     this.sprite.dx += 7;
-  //     this.sprite.image = this.walkingRightImg;
-  //     this.sprite.width = 600;
-  //     this.sprite.numberOfFrames = 10;
-  //     this.sprite.standing = false;
-  //   }
-  // }
+  checkTiles() {
+    this.missingTiles = this.map.missingTiles();
+    let playerCenter = this.sprite.dx + 30;
+    let playerLowerY = this.sprite.dy + 50;
+    for (let tile of this.missingTiles) {
+      if (
+        playerCenter >= tile.x &&
+        playerCenter <= tile.x + 40 &&
+        playerLowerY >= tile.y - 15 &&
+        playerLowerY <= tile.y + 10
+      ) {
+        // while (this.sprite.dy < this.canvasWidth - 60) {
+        //   velY += gravity;
+        //   this.sprite.dy += velY;
+        // }
+
+        // velY = 0;
+
+        this.feint();
+      }
+    }
+  }
+  feint() {
+    let velY = 6;
+    let gravity = 0.9;
+
+    let feinting = setInterval(() => {
+      velY += gravity;
+      this.sprite.dy += velY;
+      // if (this.sprite.dx < 0 || this.sprite.dx > this.canvasWidth - 60) {
+      //   this.sprite.dx += -velX;
+      // } else {
+      //   this.sprite.dx += velX;
+      // }
+      // this.sprite.dx += velX;
+      if (this.sprite.dy > this.canvasHeight - 60) {
+        velY = 0;
+        this.sprite.dy = this.canvasHeight - 50;
+        debugger
+        this.sprite.image = (this.sprite.image === this.walkingLeftImg) ? 
+        this.feintLeftImg : 
+        this.feintRightImg;
+        
+        debugger
+        this.sprite.width = 360;
+        this.sprite.feint = true;
+        this.sprite.frameIndex = 0;
+        this.sprite.numberOfFrames = 6;
+        
+        clearInterval(feinting);
+        this.changeState(2);
+      }
+    }, 20);
+  }
 }
 
 export default Player;

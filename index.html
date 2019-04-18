@@ -10,6 +10,8 @@
     integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" 
     crossorigin="anonymous"
   >
+<link href="https://fonts.googleapis.com/css?family=Coda|Short+Stack" rel="stylesheet">
+
   <title>Tamago Land</title>
   
 </head>
@@ -18,6 +20,13 @@
   <img id="logo" src="./src/images/logo.png" alt="">
   <img id="outer-background" src="./src/images/outer_background.gif" alt="">
   <div class="canvas-controls">
+    <div id="start-screen">
+      <button id="new-game-btn">New Game</button>
+    </div>
+    <div id="end-screen" class="hidden">
+      <h1>Game Over!</h1>
+      <button id="restart-game-btn">Restart</button>
+    </div>
     <canvas id="main-canvas" width="800" height="600"></canvas>
     <div id="volume" >
       <i id="vol-on" class="fas fa-volume-up "></i>

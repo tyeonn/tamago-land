@@ -17,6 +17,8 @@ class Map {
     this.drawLadder = this.drawLadder.bind(this);
     this.ladderRow = 4;
     this.ladderCol = 20;
+    this.floorRow = 4;
+    this.floorCol = 20;
     this.ladderPos = [[2, 0], [8, 1], [14, 2], [2, 3], [11, 3]];
     this.floorLevelX = {
       0: 600,
@@ -45,12 +47,11 @@ class Map {
       [6, 3],
       [7, 3]
     ];
-    const floorRow = 4;
-    const floorCol = 20;
+
     this.floor = [];
-    for (let col = 0; col < floorCol; col++) {
+    for (let col = 0; col < this.floorCol; col++) {
       this.floor[col] = [];
-      for (let row = 0; row < floorRow; row++) {
+      for (let row = 0; row < this.floorRow; row++) {
         this.floor[col][row] = { x: 0, y: 0, missing: false };
       }
     }
@@ -60,8 +61,8 @@ class Map {
       }.bind(this)
     );
 
-    for (let col = 0; col < floorCol; col++) {
-      for (let row = 0; row < floorRow; row++) {
+    for (let col = 0; col < this.floorCol; col++) {
+      for (let row = 0; row < this.floorRow; row++) {
         let tileX = col * this.tileWidth;
         let tileY = (row + 1) * (this.canvasHeight / 5) - this.tileHeight;
         this.floor[col][row].x = tileX;
@@ -110,15 +111,27 @@ class Map {
 
   //Filter ladders that are not missing
   displayedLadders() {
-    let lads= [];
+    let lads = [];
     for (let col = 0; col < this.ladderCol; col++) {
       for (let row = 0; row < this.ladderRow; row++) {
-        if(!this.ladders[col][row].missing){
+        if (!this.ladders[col][row].missing) {
           lads.push(this.ladders[col][row]);
         }
       }
     }
     return lads;
+  }
+  missingTiles() {
+    let tiles = [];
+    for (let col = 0; col < this.floorCol; col++) {
+      for (let row = 0; row < this.floorRow; row++) {
+        if (this.floor[col][row].missing) {
+          tiles.push(this.floor[col][row]);
+        }
+      }
+    }
+    
+    return tiles;
   }
 }
 export default Map;

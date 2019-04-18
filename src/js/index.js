@@ -6,6 +6,7 @@ const canvas = document.getElementById("main-canvas");
 const ctx = canvas.getContext("2d");
 const canvasWidth = 800;
 const canvasHeight = 600;
+let state = 0;
 
 window.requestAnimationFrame =
   window.requestAnimationFrame ||
@@ -15,9 +16,12 @@ window.requestAnimationFrame =
   function(f) {
     return setTimeout(f, 1000 / 60);
   };
-
-const map = new Map(ctx, canvasWidth, canvasHeight);
-const player = new Player(ctx, canvasWidth, canvasHeight, map);
+  
+const changeState = (num) => {
+  state = num;
+};
+let map = new Map(ctx, canvasWidth, canvasHeight);
+let player = new Player(ctx, canvasWidth, canvasHeight, map, changeState);
 const mainSong = new Howl({
   src: ['./src/songs/main_song.mp3'],
   // autoplay: true,
@@ -25,9 +29,8 @@ const mainSong = new Howl({
   autoUnlock: true,
   volume: 0.6
 });
-// const cxt = new AudioContext();
-// setTimeout(cxt.resume().then(mainSong.play()), 1000);
-mainSong.play();
+
+// mainSong.play();
 
 const unmute = document.getElementById("vol-on");
 const mute = document.getElementById("vol-off");
@@ -40,23 +43,56 @@ volume.addEventListener('click', () => {
 });
 document.addEventListener("keydown", player.keyDownHandler);
 document.addEventListener("keyup", player.keyUpHandler);
+const endScreen = document.getElementById("end-screen");
 
+let animation;
 const animate = () => {
+  switch(state){
+    case 0:
+    const startBtn = document.getElementById("new-game-btn");
+      const startScreen = document.getElementById("start-screen");
+      startBtn.addEventListener('click', () => {
+        changeState(1);
+        startScreen.classList.add("hidden");
+      });
+      break;
+      case 1:
+      ctx.clearRect(0,0,canvasWidth,canvasHeight);
+      map.render();
+      player.sprite.loop();
+      player.updatePos();
+      player.checkTiles();
+      break;
+      case 2:
+      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+    map.render();
+    player.sprite.loop();
+    player.updatePos();
+    player.checkTiles();
+      endScreen.classList.remove("hidden");
+      document.removeEventListener("keydown", player.keyDownHandler);
+      document.removeEventListener("keyup", player.keyUpHandler);
+      break;
+      
+    }
+    animation = requestAnimationFrame(animate);
+  };
+  animate();
 
-  ctx.clearRect(0,0,canvasWidth,canvasHeight);
-  map.render();
-  player.sprite.loop();
-  player.updatePos();
-  // player.sprite.update();
-  // player.sprite.render();
-  requestAnimationFrame(animate);
-};
-animate();
-// ctx.beginPath();
-// ctx.fillStyle = "black";
-// ctx.rect(0, canvas.height / 5, 40, 15);
-// ctx.rect(0, (canvas.height * 2) / 5, 40, 15);
-// ctx.rect(0, (canvas.height * 3) / 5, 40, 15);
-// ctx.rect(0, (canvas.height * 4) / 5, 40, 15);
-// ctx.fill();
-// ctx.closePath();
+  const restartBtn = document.getElementById("restart-game-btn");
+  restartBtn.addEventListener("click", () => {
+    // cancelAnimationFrame(animation);
+    map = new Map(ctx, canvasWidth, canvasHeight);
+    player = new Player(
+      ctx,
+      canvasWidth,
+      canvasHeight,
+      map,
+      changeState
+    );
+    // requestAnimationFrame(animate);
+    document.addEventListener("keydown", player.keyDownHandler);
+    document.addEventListener("keyup", player.keyUpHandler);
+    changeState(1);
+    endScreen.classList.add("hidden");
+  });

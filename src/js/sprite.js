@@ -17,6 +17,7 @@ function sprite(options) {
   that.dy = options.dy || 0;
   that.numberOfFrames = options.numberOfFrames || 1;
   that.standing = options.standing;
+  that.feint = options.feint;
 
   that.render = () => {
     // that.image.onload = () => {
@@ -50,15 +51,15 @@ function sprite(options) {
         if (that.frameIndex === that.numberOfFrames - 1 || that.frameIndex === 0) {
           step = -step;
         }
-      }else{
+      }else if(!that.standing){
         step = 1;
         if(that.frameIndex < that.numberOfFrames - 1){
           that.frameIndex += 1;
         }else{
           that.frameIndex = 0;
         }
-
       }
+
     }
   };
 
@@ -71,3 +72,9 @@ function sprite(options) {
   return that;
 }
 export default sprite;
+// else if(that.feint){
+//         step = 1;
+//         if (that.frameIndex < that.numberOfFrames - 1) {
+//           that.frameIndex += 1;
+//         }
+//       }
