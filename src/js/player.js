@@ -4,6 +4,7 @@ class Player {
   constructor(ctx, canvasWidth, canvasHeight, map, changeState) {
     this.changeState = changeState;
     this.map = map;
+    this.obstacles = [];
     this.ladders = [];
     this.missingTiles = [];
     this.floorLevel = 0;
@@ -37,7 +38,8 @@ class Player {
       numberOfFrames: 4,
       standing: true,
       feint: false,
-      frameIndex: 0
+      frameIndex: 0,
+      step: 1
     });
 
     this.keyDownHandler = this.keyDownHandler.bind(this);
@@ -60,6 +62,7 @@ class Player {
     this.stand = this.stand.bind(this);
     this.checkLadder = this.checkLadder.bind(this);
     this.feint = this.feint.bind(this);
+    this.feintNoFall = this.feintNoFall.bind(this);
     this.keys = [];
     this.nextFloorY = 0;
 
@@ -117,6 +120,7 @@ class Player {
       side === "left" ? this.standingImg : this.standingImgRight;
     this.sprite.width = 240;
     this.sprite.standing = true;
+    this.sprite.step = 1;
     this.sprite.frameIndex = 0;
     this.sprite.numberOfFrames = 4;
   }
@@ -266,13 +270,13 @@ class Player {
       let velX;
       console.log(this.rightPress);
       if (this.rightPress) {
-        velX = 1;
+        velX = 2;
       } else if (this.leftPress) {
-        velX = -1;
+        velX = -2;
       } else {
         velX = 0;
       }
-      let velY = -12;
+      let velY = -13;
       let gravity = 0.9;
       let jumping = setInterval(() => {
         velY += gravity;
@@ -291,6 +295,32 @@ class Player {
         }
       }, 10);
     }
+  }
+  checkObs() {
+    this.obstacles = this.map.displayedObs();
+    let playerCenter = this.sprite.dx + 30;
+    let playerLowerY = this.sprite.dy + 50;
+    for (let obs of this.obstacles) {
+      if (
+        playerLowerY <= obs.y + 50 &&
+        playerLowerY >= obs.y + 10 &&
+        this.sprite.dx + 10 <= obs.x + 30 &&
+        this.sprite.dx + 45 >= obs.x
+      ) {
+        this.feintNoFall();
+      }
+    }
+  }
+  feintNoFall() {
+    this.sprite.image =
+      this.sprite.image === this.walkingLeftImg ?
+      this.feintLeftImg :
+      this.feintRightImg;
+    this.sprite.width = 360;
+    this.sprite.frameIndex = 0;
+    this.sprite.numberOfFrames = 6;
+    this.standing = false;
+    setTimeout(this.changeState(3), 30);
   }
   checkTiles() {
     this.missingTiles = this.map.missingTiles();
@@ -319,7 +349,7 @@ class Player {
   feint() {
     let velY = 6;
     let gravity = 0.9;
-
+    
     let feinting = setInterval(() => {
       velY += gravity;
       this.sprite.dy += velY;
@@ -330,24 +360,22 @@ class Player {
       // }
       // this.sprite.dx += velX;
       if (this.sprite.dy > this.canvasHeight - 60) {
-
         velY = 0;
         this.sprite.dy = this.canvasHeight - 50;
-        debugger
-        this.sprite.image = (this.sprite.image === this.walkingLeftImg) ? 
-        this.feintLeftImg : 
-        this.feintRightImg;
-        
-        debugger
+        this.sprite.image =
+          this.sprite.image === this.walkingLeftImg
+            ? this.feintLeftImg
+            : this.feintRightImg;
         this.sprite.width = 360;
-        this.sprite.feint = true;
+        // this.sprite.feint = true;
         this.sprite.frameIndex = 0;
         this.sprite.numberOfFrames = 6;
-        
         clearInterval(feinting);
-        this.changeState(2);
       }
     }, 20);
+    setTimeout(
+      this.changeState(3), 30
+    );
   }
 }
 

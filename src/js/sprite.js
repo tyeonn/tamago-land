@@ -3,7 +3,7 @@ function sprite(options) {
   that.frameIndex = options.frameIndex || 0;
   let tickCount = 0;
   let ticksPerFrame = options.ticksPerFrame || 0;
-  let step = 1;
+  that.step = options.step;
  
   that.canvasWidth = options.canvasWidth;
   that.canvasHeight = options.canvasHeight;
@@ -17,7 +17,7 @@ function sprite(options) {
   that.dy = options.dy || 0;
   that.numberOfFrames = options.numberOfFrames || 1;
   that.standing = options.standing;
-  that.feint = options.feint;
+  // that.feint = options.feint;
 
   that.render = () => {
     // that.image.onload = () => {
@@ -47,12 +47,12 @@ function sprite(options) {
 
       tickCount = 0;
       if(that.standing){
-        that.frameIndex += step;
+        that.frameIndex += that.step;
         if (that.frameIndex === that.numberOfFrames - 1 || that.frameIndex === 0) {
-          step = -step;
+          that.step = -that.step;
         }
       }else if(!that.standing){
-        step = 1;
+        // step = 1;
         if(that.frameIndex < that.numberOfFrames - 1){
           that.frameIndex += 1;
         }else{
