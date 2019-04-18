@@ -1,7 +1,7 @@
 import sprite from "./sprite";
 
 class Player {
-  constructor(ctx, canvasWidth, canvasHeight, map, changeState, mainSong) {
+  constructor(ctx, canvasWidth, canvasHeight, map, changeState) {
     this.changeState = changeState;
     this.map = map;
     this.ladders = [];
@@ -24,7 +24,6 @@ class Player {
     this.walkingLeftImg.src = "./src/images/penguin_walk_left.png";
     this.walkingRightImg = new Image();
     this.walkingRightImg.src = "./src/images/penguin_walk_right.png";
-    // mainSong.play();
     this.sprite = sprite({
       context: this.ctx,
       canvasWidth: this.canvasWidth,
@@ -311,6 +310,8 @@ class Player {
 
         // velY = 0;
 
+        // document.removeEventListener("keydown", this.keyDownHandler);
+        // document.removeEventListener("keyup", this.keyUpHandler);
         this.feint();
       }
     }
@@ -329,6 +330,7 @@ class Player {
       // }
       // this.sprite.dx += velX;
       if (this.sprite.dy > this.canvasHeight - 60) {
+
         velY = 0;
         this.sprite.dy = this.canvasHeight - 50;
         debugger
