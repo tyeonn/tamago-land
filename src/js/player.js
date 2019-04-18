@@ -1,7 +1,7 @@
 import sprite from "./sprite";
 
 class Player {
-  constructor(ctx, canvasWidth, canvasHeight, map, changeState) {
+  constructor(ctx, canvasWidth, canvasHeight, map, changeState, mainSong) {
     this.changeState = changeState;
     this.map = map;
     this.ladders = [];
@@ -24,7 +24,7 @@ class Player {
     this.walkingLeftImg.src = "./src/images/penguin_walk_left.png";
     this.walkingRightImg = new Image();
     this.walkingRightImg.src = "./src/images/penguin_walk_right.png";
-
+    // mainSong.play();
     this.sprite = sprite({
       context: this.ctx,
       canvasWidth: this.canvasWidth,
