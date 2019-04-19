@@ -4,7 +4,7 @@ class Player {
     this.fishSound = fishSound;
     this.fishes = [];
     this.score = 0;
-    this.allFishEaten = 11;
+    this.allFishEaten = 1;
     this.changeState = changeState;
     this.map = map;
     this.obstacles = [];
@@ -80,7 +80,6 @@ class Player {
     // this.sprite.context: this.ctx,
     // this.sprite.canvasWidth: this.canvasWidth,
     // this.sprite.canvasHeight: this.canvasHeight,
-    this.sprite.height = 54;
     this.sprite.width = 240;
     this.sprite.image = this.standingImg;
     this.sprite.dx = this.canvasWidth - 80;
@@ -91,6 +90,13 @@ class Player {
     this.sprite.feint = false;
     this.sprite.frameIndex = 0;
     this.sprite.step = 1;
+    // this.sprite.image =
+    //   side === "left" ? this.standingImg : this.standingImgRight;
+    // this.sprite.width = 240;
+    // this.sprite.standing = true;
+    // this.sprite.step = 1;
+    // this.sprite.frameIndex = 0;
+    // this.sprite.numberOfFrames = 4;
   }
   keyDownHandler(e) {
     // debugger
@@ -428,7 +434,7 @@ class Player {
     if (this.allFishEaten === 0 && this.map.level === 1) {
       this.map.level = 2;
       this.map.drawFish();
-      this.allFishEaten = 11;
+      this.allFishEaten = 3;
       this.resetSprite();
       this.changeState(4);
     } else if (this.allFishEaten === 0 && this.map.level === 2) {
