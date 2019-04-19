@@ -168,6 +168,7 @@ const animate = () => {
       break;
     case 4:
       document.getElementById("level-num").innerHTML = "Level 2";
+      player.resetSprite();
       state = 1;
       break;
     case 5:
