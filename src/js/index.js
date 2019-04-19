@@ -43,18 +43,28 @@ const feintSong = new Howl({
   volume: 0.6
 });
 
+const fishSound = new Howl({
+  src: ["./src/songs/fish.mp3"],
+  loop: false,
+  autoUnlock: true,
+  volume: 0.6
+});
 startSong.play();
 
 let map = new Map(ctx, canvasWidth, canvasHeight);
+map.drawFish();
+// let fishes = map.displayedFish();
 let player = new Player(
   ctx,
   canvasWidth,
   canvasHeight,
   map,
   changeState,
-  feintSong
+  feintSong,
+  // fishes,
+  fishSound
 );
-let fish = new Fish(ctx, canvasWidth, canvasHeight, map);
+// let fish = new Fish(ctx, canvasWidth, canvasHeight, map);
 
 const unmute = document.getElementById("vol-on");
 const mute = document.getElementById("vol-off");
@@ -83,7 +93,6 @@ volume.addEventListener("click", () => {
 });
 document.addEventListener("keydown", player.keyDownHandler);
 document.addEventListener("keyup", player.keyUpHandler);
-const endScreen = document.getElementById("end-screen");
 const startBtn = document.getElementById("new-game-btn");
 const startScreen = document.getElementById("start-screen");
 startBtn.addEventListener("click", () => {
@@ -91,20 +100,59 @@ startBtn.addEventListener("click", () => {
   startScreen.classList.add("hidden");
   startSong.stop();
 });
+const endScreen = document.getElementById("end-screen");
+const restartBtn = document.getElementById("restart-game-btn");
+restartBtn.addEventListener("click", () => {
+  map = new Map(ctx, canvasWidth, canvasHeight);
+  player = new Player(ctx, canvasWidth, canvasHeight, map, changeState);
+  map.drawFish();
+  document.getElementById("score-num").innerHTML = `Fish: 0`;
+  document.getElementById("level-num").innerHTML = "Level 1";
+  // cancelAnimationFrame(animation);
+  // requestAnimationFrame(animate);
+  document.addEventListener("keydown", player.keyDownHandler);
+  document.addEventListener("keyup", player.keyUpHandler);
+  changeState(1);
+  endScreen.classList.add("hidden");
+});
+const winScreen = document.getElementById("win-screen");
+const playAgainBtn = document.getElementById("play-again-btn");
+playAgainBtn.addEventListener('click', () => {
+  map = new Map(ctx, canvasWidth, canvasHeight);
+  player = new Player(ctx, canvasWidth, canvasHeight, map, changeState);
+  map.drawFish();
+  document.getElementById("score-num").innerHTML = `Fish: 0`;
+  document.getElementById("level-num").innerHTML = "Level 1";
+
+  // cancelAnimationFrame(animation);
+  // requestAnimationFrame(animate);
+  document.addEventListener("keydown", player.keyDownHandler);
+  document.addEventListener("keyup", player.keyUpHandler);
+  changeState(1);
+  winScreen.classList.add("hidden");
+});
+
 let animation;
+// console.log(fishes);
 const animate = () => {
   switch (state) {
     case 1:
       if (!mainSong.playing()) {
         mainSong.play();
       }
-
       ctx.clearRect(0, 0, canvasWidth, canvasHeight);
       map.render();
+      for(let fishObj of map.displayedFish()){
+        if(!fishObj.fish.hidden){
+          fishObj.fish.sprite.loop();
+        }
+      }
       player.sprite.loop();
       player.updatePos();
       player.checkTiles();
       player.checkObs();
+      player.checkFish();
+      // player.trackScore();
       break;
     case 2:
       ctx.clearRect(0, 0, canvasWidth, canvasHeight);
@@ -118,19 +166,21 @@ const animate = () => {
       feintSong.play();
       state = 2;
       break;
+    case 4:
+      document.getElementById("level-num").innerHTML = "Level 2";
+      state = 1;
+      break;
+    case 5:
+      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+      player.sprite.loop();
+      // player.checkObs();
+      winScreen.classList.remove("hidden");
+      document.removeEventListener("keydown", player.keyDownHandler);
+      document.removeEventListener("keyup", player.keyUpHandler);
+      break;
   }
   animation = requestAnimationFrame(animate);
 };
 animate();
 
-const restartBtn = document.getElementById("restart-game-btn");
-restartBtn.addEventListener("click", () => {
-  map = new Map(ctx, canvasWidth, canvasHeight);
-  player = new Player(ctx, canvasWidth, canvasHeight, map, changeState);
-  // cancelAnimationFrame(animation);
-  // requestAnimationFrame(animate);
-  document.addEventListener("keydown", player.keyDownHandler);
-  document.addEventListener("keyup", player.keyUpHandler);
-  changeState(1);
-  endScreen.classList.add("hidden");
-});
+

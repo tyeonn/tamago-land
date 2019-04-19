@@ -1,3 +1,5 @@
+import Fish from './fish';
+
 class Map {
   constructor(ctx, canvasWidth, canvasHeight) {
     this.ctx = ctx;
@@ -21,12 +23,22 @@ class Map {
     this.createFloor = this.createFloor.bind(this);
     this.drawLadder = this.drawLadder.bind(this);
     this.drawObstacle = this.drawObstacle.bind(this);
+    this.drawFish = this.drawFish.bind(this);
     this.ladderRow = 4;
     this.ladderCol = 20;
     this.floorRow = 4;
     this.floorCol = 20;
     this.obsRow = 5;
     this.obsCol = 20;
+    this.fishWidth = 60;
+    this.fishHeight = 40;
+    this.fishRow = 5;
+    this.fishCol = 20;
+    this.fishes = [];
+    // this.fishSprites = [];
+    this.level = 1;
+    this.fishPos1 = [[0,0],[17,0],[10,0], [3,1], [17,1], [18,2], [1,2], [17,3], [8,3], [0,3], [7,4]];
+    this.fishPos2 = [[17,0],[10,0], [3,1], [17,1], [18,2], [1,2], [19,3], [12,3], [1,3], [0,4], [8,4]];
     this.ladderPos = [[2, 0], [8, 1], [14, 2], [2, 3], [11, 3]];
     this.obstaclePos = [
       [8, 0],
@@ -54,6 +66,7 @@ class Map {
     this.drawFloor();
     this.drawLadder();
     this.drawObstacle();
+    this.displayedFish();
   }
   drawFloor() {
     // this.tile.onload = () =>
@@ -194,6 +207,64 @@ class Map {
     }
 
     return tiles;
+  }
+
+  drawFish() {
+    for (let col = 0; col < this.fishCol; col++) {
+      this.fishes[col] = [];
+      for (let row = 0; row < this.fishRow; row++) {
+        this.fishes[col][row] = { x: 0, y: 0, missing: true, fish: {} };
+      }
+    }
+    // when player catches fish, change missing to false
+    if(this.level === 1){
+      this.fishPos1.forEach(pos => {
+        this.fishes[pos[0]][pos[1]].missing = false;
+      });
+    }else {
+      this.fishPos2.forEach(pos => {
+        this.fishes[pos[0]][pos[1]].missing = false;
+      });
+    }
+    for (let col = 0; col < this.fishCol; col++) {
+      for (let row = 0; row < this.fishRow; row++) {
+        let fishX = col * (this.fishWidth-20);
+        let fishY;
+        if (row != 4) {
+          fishY =
+            (row + 1) * (this.canvasHeight / 5) -
+            (this.fishHeight - 5 + this.tileHeight);
+        } else {
+          fishY = (row + 1) * (this.canvasHeight / 5) - this.fishHeight;
+        }
+        this.fishes[col][row].x = fishX;
+        this.fishes[col][row].y = fishY;
+
+        if (!this.fishes[col][row].missing) {
+          // this.ctx.drawImage(this.obstacle, fishX, fishY);
+          // this.fishSprites.push(new Fish(this.ctx, this.canvasWidth, this.canvasHeight, self, fishX, fishY)) ;
+          this.fishes[col][row].fish = new Fish(
+            this.ctx,
+            this.canvasWidth,
+            this.canvasHeight,
+            self,
+            fishX,
+            fishY
+          );
+        }
+      }
+    }
+  }
+  displayedFish() {
+    let displayFish = [];
+    for (let col = 0; col < this.fishCol; col++) {
+      for (let row = 0; row < this.fishRow; row++) {
+        if (!this.fishes[col][row].missing) {
+          displayFish.push(this.fishes[col][row]);
+        }
+      }
+    }
+    return displayFish;
   }
 }
 export default Map;

@@ -88,6 +88,59 @@ body {
     cursor: pointer;
     margin-top: 30px;
 }
+#level {
+  display: flex;
+  position: absolute;
+  margin-left: 10px;
+}
+#level h1 {
+  font-size: 22px;
+    color: #ebff00;
+}
+#score {
+  display: flex;
+  position: absolute;
+  margin-left: 725px;
+}
+#score h1 {
+  font-size: 22px;
+    color: #ebff00;
+}
+#win-screen {
+  display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    margin-left: 200px;
+    margin-top: 150px;
+    background: #FEE6FE;
+    border-radius: 89px;
+    width: 400px;
+    height: 300px;
+    z-index: 1;
+    color: #472485;
+    /* background: url("../images/background.png");
+    background-repeat: no-repeat;
+    background-size: 800px 600px; */
+}
+#win-screen h1 {
+      font-size: 60px;
+}
+#play-again-btn {
+  appearance: none;
+    -webkit-appearance: none;
+    font-size: 40px;
+    /* margin-top: 400px; */
+    font-family: 'Coda', cursive;
+    background: #472486;
+    color: white;
+    border: none;
+    border-radius: 32px;
+    padding: 0 26px;
+    cursor: pointer;
+    margin-top: 30px;
+}
 #main-canvas {
   background: url("../images/background.png");
   background-repeat: no-repeat;

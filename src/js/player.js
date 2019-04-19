@@ -1,7 +1,10 @@
 import sprite from "./sprite";
-
 class Player {
-  constructor(ctx, canvasWidth, canvasHeight, map, changeState) {
+  constructor(ctx, canvasWidth, canvasHeight, map, changeState, fishSound) {
+    this.fishSound = fishSound;
+    this.fishes = [];
+    this.score = 0;
+    this.allFishEaten = 11;
     this.changeState = changeState;
     this.map = map;
     this.obstacles = [];
@@ -58,6 +61,7 @@ class Player {
     this.goingDown = false;
     this.goingUp = false;
 
+    this.resetSprite = this.resetSprite.bind(this);
     this.jump = this.jump.bind(this);
     this.stand = this.stand.bind(this);
     this.checkLadder = this.checkLadder.bind(this);
@@ -72,6 +76,22 @@ class Player {
     // this.velX = 0;
   }
 
+  resetSprite() {
+    // this.sprite.context: this.ctx,
+    // this.sprite.canvasWidth: this.canvasWidth,
+    // this.sprite.canvasHeight: this.canvasHeight,
+    this.sprite.height = 54;
+    this.sprite.width = 240;
+    this.sprite.image = this.standingImg;
+    this.sprite.dx = this.canvasWidth - 80;
+    this.sprite.dy = this.canvasHeight - 48;
+    // this.sprite.ticksPerFrame = 5,
+    this.sprite.numberOfFrames = 4;
+    this.sprite.standing = true;
+    this.sprite.feint = false;
+    this.sprite.frameIndex = 0;
+    this.sprite.step = 1;
+  }
   keyDownHandler(e) {
     // debugger
     if (e.key == "Right" || e.key == "ArrowRight") {
@@ -313,9 +333,9 @@ class Player {
   }
   feintNoFall() {
     this.sprite.image =
-      this.sprite.image === this.walkingLeftImg ?
-      this.feintLeftImg :
-      this.feintRightImg;
+      this.sprite.image === this.walkingLeftImg
+        ? this.feintLeftImg
+        : this.feintRightImg;
     this.sprite.width = 360;
     this.sprite.frameIndex = 0;
     this.sprite.numberOfFrames = 6;
@@ -349,7 +369,7 @@ class Player {
   feint() {
     let velY = 6;
     let gravity = 0.9;
-    
+
     let feinting = setInterval(() => {
       velY += gravity;
       this.sprite.dy += velY;
@@ -373,10 +393,51 @@ class Player {
         clearInterval(feinting);
       }
     }, 20);
-    setTimeout(
-      this.changeState(3), 30
-    );
+    setTimeout(this.changeState(3), 30);
   }
+  checkFish() {
+    this.fishes = this.map.displayedFish();
+    let playerLowerY = this.sprite.dy + 50;
+
+    for (let fishes of this.fishes) {
+      if (
+        // playerLowerY <= obs.y + 50 &&
+        // playerLowerY >= obs.y + 10 &&
+        !fishes.fish.hidden &&
+        this.sprite.dx <= fishes.x + 30 &&
+        this.sprite.dx + 30 >= fishes.x &&
+        playerLowerY >= fishes.y + 10 &&
+        this.sprite.dy <= fishes.y
+      ) {
+        this.allFishEaten--;
+        // while (this.sprite.dy < this.canvasWidth - 60) {
+        //   velY += gravity;
+        //   this.sprite.dy += velY;
+        // }
+
+        // velY = 0;
+
+        // document.removeEventListener("keydown", this.keyDownHandler);
+        // document.removeEventListener("keyup", this.keyUpHandler);
+        document.getElementById("score-num").innerHTML = `Fish: ${++this.score}`;
+        fishes.fish.hide();
+        console.log(fishes.fish);
+        // setTimeout(this.fishSound.play(), 20);
+      }
+    }
+    if (this.allFishEaten === 0 && this.map.level === 1) {
+      this.map.level = 2;
+      this.map.drawFish();
+      this.allFishEaten = 11;
+      this.resetSprite();
+      this.changeState(4);
+    } else if (this.allFishEaten === 0 && this.map.level === 2) {
+      this.changeState(5);
+    }
+  }
+  // trackScore() {
+  //   // document.getElementById("score-num").innerHTML = `Fish: ${++this.score}`;
+  // }
 }
 
 export default Player;
