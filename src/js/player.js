@@ -91,7 +91,7 @@ class Player {
     this.sprite.frameIndex = 0;
     this.sprite.step = 1;
     this.floorLevel = 0;
-    debugger
+    // debugger
     // this.sprite.image =
     //   side === "left" ? this.standingImg : this.standingImgRight;
     // this.sprite.width = 240;
@@ -184,7 +184,7 @@ class Player {
         ? (this.nextFloorY = this.map.floorLevelX[this.floorLevel])
         : (this.nextFloorY = this.map.floorLevelX[this.floorLevel + 1]);
       let playerLowerY = this.sprite.dy + 50;
-      debugger;
+      // debugger;
       if (currLadder && playerLowerY > this.nextFloorY) {
         // this.goingUp = true;
         this.isClimbing = true;
@@ -227,7 +227,7 @@ class Player {
       //         : 600);
       let playerLowerY = this.sprite.dy + 50;
       let playerUpperY = this.sprite.dy;
-      debugger;
+      // debugger;
       if (currLadder && playerLowerY <= this.nextFloorY) {
         this.goingDown = true;
         this.isClimbing = true;
@@ -239,7 +239,7 @@ class Player {
         console.log(playerLowerY + " " + this.nextFloorY);
       } else if (playerUpperY >= this.nextFloorY - 51) {
         // this.sprite.dy = this.map.floorLevelX[this.floorLevel + 1] + 50;
-        debugger;
+        // debugger;
         this.isClimbing = false;
         this.goingDown = false;
         this.sprite.dy = this.nextFloorY - 48;
