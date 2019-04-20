@@ -1,60 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="shortcut icon" type="image/png" href="./src/images/favicon.png">
-  <link rel="stylesheet" href="./src/css/main.css">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
-    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" 
-    crossorigin="anonymous"
-  >
-<link href="https://fonts.googleapis.com/css?family=Coda|Short+Stack" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="./src/images/favicon.png"
+    />
+    <link rel="stylesheet" href="./src/css/main.css" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+      integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Coda|Short+Stack"
+      rel="stylesheet"
+    />
+    <title>Tamago Land</title>
+  </head>
+  <body>
+    <img id="logo" src="./src/images/logo.png" alt="" />
+    <img id="outer-background" src="./src/images/outer_background.gif" alt="" />
+    <div class="canvas-controls">
+      <div id="start-screen">
+        <button id="new-game-btn">New Game</button>
+      </div>
+      <div id="end-screen" class="hidden">
+        <h1>Game Over!</h1>
+        <button id="restart-game-btn">Restart</button>
+      </div>
+      <div id="win-screen" class="hidden">
+        <h1>You Win!</h1>
+        <button id="play-again-btn">Play Again!</button>
+      </div>
+      <div id="level">
+        <h1 id="level-num">Level: 1</h1>
+      </div>
+      <div id="score">
+        <h1 id="score-num">Fish: 0</h1>
+      </div>
+      <canvas id="main-canvas" width="800" height="600"></canvas>
+      <div id="volume">
+        <i id="vol-on" class="fas fa-volume-up "></i>
+        <i id="vol-off" class="fas fa-volume-mute hidden"></i>
+      </div>
+      <div class="movement-container">
+        <h2>Instructions</h2>
+        <p>Gather all the fish!</p>
+        <h2>Movement</h2>
+        <img id="arrow-img" src="./src/images/arrow.png" alt="" />
+        <h2>Jump</h2>
+        <img id="spacebar-img" src="./src/images/spacebar.png" alt="" />
+      </div>
+    </div>
 
-  <title>Tamago Land</title>
-  
-</head>
-<body>
-  <!-- <iframe src="./src/songs/start_song.mp3" allow="autoplay" style="display:none"></iframe> -->
-  <img id="logo" src="./src/images/logo.png" alt="">
-  <img id="outer-background" src="./src/images/outer_background.gif" alt="">
-  <div class="canvas-controls">
-    <div id="start-screen">
-      <button id="new-game-btn">New Game</button>
-    </div>
-    <div id="end-screen" class="hidden">
-      <h1>Game Over!</h1>
-      <button id="restart-game-btn">Restart</button>
-    </div>
-    <div id="win-screen" class="hidden">
-      <h1>You Win!</h1>
-      <button id="play-again-btn">Play Again!</button>
-    </div>
-    <div id="level">
-      <h1 id="level-num">Level: 1</h1>
-    </div>
-    <div id="score">
-      <h1 id="score-num">Fish: 0</h1>
-    </div>
-    <canvas id="main-canvas" width="800" height="600"></canvas>
-    <div id="volume" >
-      <i id="vol-on" class="fas fa-volume-up "></i>
-      <i id="vol-off" class="fas fa-volume-mute hidden"></i>
-    </div>
-    <div class="movement-container">
-      <h2>Instructions</h2>
-      <p>Gather all the fish!</p>
-      <h2>Movement</h2>
-      <img id="arrow-img" src="./src/images/arrow.png" alt="">
-      <h2>Jump</h2>
-      <img id="spacebar-img" src="./src/images/spacebar.png" alt="">
-      
-    </div>
-
-  </div>
-  
-  
-  <script type="application/javascript" src="./dist/bundle.js"></script>
-</body>
+    <script type="application/javascript" src="./dist/bundle.js"></script>
+  </body>
 </html>

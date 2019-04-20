@@ -4,23 +4,19 @@ function sprite(options) {
   let tickCount = 0;
   let ticksPerFrame = options.ticksPerFrame || 0;
   that.step = options.step;
- 
+
   that.canvasWidth = options.canvasWidth;
   that.canvasHeight = options.canvasHeight;
   that.context = options.context;
   that.width = options.width;
   that.height = options.height;
   that.image = options.image;
-  // that.sx = options.sx || 0;
-  // that.sy = options.sy || 0;
   that.dx = options.dx || 0;
   that.dy = options.dy || 0;
   that.numberOfFrames = options.numberOfFrames || 1;
   that.standing = options.standing;
-  // that.feint = options.feint;
 
   that.render = () => {
-    // that.image.onload = () => {
     that.context.drawImage(
       that.image,
       // Sprite sheet
@@ -36,45 +32,37 @@ function sprite(options) {
       that.width / that.numberOfFrames,
       that.height
     );
-    // };
   };
 
   that.update = () => {
-    // debugger
     tickCount += 1;
-
     if (tickCount > ticksPerFrame) {
-
       tickCount = 0;
-      if(that.standing){
+      // Iterate sprite sheet back and forth
+      if (that.standing) {
         that.frameIndex += that.step;
-        if (that.frameIndex === that.numberOfFrames - 1 || that.frameIndex === 0) {
+        if (
+          that.frameIndex === that.numberOfFrames - 1 ||
+          that.frameIndex === 0
+        ) {
           that.step = -that.step;
         }
-      }else if(!that.standing){
-        // step = 1;
-        if(that.frameIndex < that.numberOfFrames - 1){
+      // Iterate sprite sheet from beginning
+      } else if (!that.standing) {
+        if (that.frameIndex < that.numberOfFrames - 1) {
           that.frameIndex += 1;
-        }else{
+        } else {
           that.frameIndex = 0;
         }
       }
-
     }
   };
 
   that.loop = () => {
     that.render();
     that.update();
-    // requestAnimationFrame(that.loop);
   };
 
   return that;
 }
 export default sprite;
-// else if(that.feint){
-//         step = 1;
-//         if (that.frameIndex < that.numberOfFrames - 1) {
-//           that.frameIndex += 1;
-//         }
-//       }

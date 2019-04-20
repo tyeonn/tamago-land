@@ -24,7 +24,6 @@ class Enemy {
       standing: false,
       frameIndex: 0
     });
-    // this.hidden = false;
   }
 
 }

@@ -23,14 +23,12 @@ class Fish {
       numberOfFrames: 6,
       standing: false,
       frameIndex: 0,
-      
     });
     this.hidden = false;
   }
 
   hide() {
     this.hidden = true;
-    
   }
 }
 export default Fish;
