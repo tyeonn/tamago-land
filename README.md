@@ -5,8 +5,8 @@
  ![Screenshot](https://github.com/tyeonn/tamago-land/blob/master/Screen%20Shot%202019-04-20%20at%203.37.45%20PM.png)
 
 ### Background
-http://www.donkey-kong.org/ 
-Tamago Land is a variation of the classic game of Donkey Kong. The original Donkey Kong is a single player game where Mario has to climb ladders to reach the top to save Princess Peach. Donkey Kong is the antagonist that throws barrels down in order to thwart Mario from reaching the top. In Tamago Land, the player will play as a penguin that has to eat all the fish and climb ladders to navigate through the floors. 
+  
+Tamago Land is a variation of the classic game of [Donkey Kong](http://www.donkey-kong.org/). The original Donkey Kong is a single player game where Mario has to climb ladders to reach the top to save Princess Peach. Donkey Kong is the antagonist that throws barrels down in order to thwart Mario from reaching the top. In Tamago Land, the player will play as a penguin that has to eat all the fish and climb ladders to navigate through the floors. 
 
 ### Functionality & MVP  
 
