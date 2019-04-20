@@ -10,7 +10,7 @@ With Tamago Land, users will be able to use the arrow keys to navigate and to us
 In addition, users will be able to: 
 - [ ] Start and reset the game
 - [ ] Mute the music 
-- [ ] See the highscores which is stored in a database
+- [ ] See their scores and level
 
 In addition, this project will include:
 - [ ] An About modal describing the background and rules of the game

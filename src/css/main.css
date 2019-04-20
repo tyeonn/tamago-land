@@ -158,6 +158,15 @@ body {
   color: #0c74c1;
   margin-bottom: 50px;
 }
+#links {
+  display: flex;
+  list-style: none;
+  margin-top: 50px;
+}
+#links i {
+  font-size: 50px;
+  padding: 0 20px;
+}
 #arrow-img {
   height: 15%;
   width: 60%;
