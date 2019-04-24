@@ -1,8 +1,8 @@
 # Tamago Land
 
- [Live](https://tyeonn.github.io/tamago-land/)
+ [Live Link](https://tyeonn.github.io/tamago-land/)
 
- [!Screenshot](https://github.com/tyeonn/tamago-land/blob/master/Screen%20Shot%202019-04-20%20at%203.37.45%20PM.png)
+ ![Screenshot](https://github.com/tyeonn/tamago-land/blob/master/Screen%20Shot%202019-04-20%20at%203.37.45%20PM.png)
 
 ### Background
 http://www.donkey-kong.org/ 
@@ -46,3 +46,8 @@ There are many directions this game could eventually go.  Some anticipated updat
 
 - [ ] Add more levels and increasing difficulty
 - [ ] Add high score tracker with firebase
+
+Credit to:  
+[Jonvier89](http://jonvier89.tumblr.com/) for the background gif  
+[Maicakes](http://mai-cakes.tumblr.com/) for the background image  
+[Angevon](http://rosprites.blogspot.com/) for the sprite images  
