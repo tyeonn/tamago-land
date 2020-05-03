@@ -49,7 +49,7 @@ let fishSound = new Howl({
   autoUnlock: true,
   volume: 0.6
 });
-startSong.play();
+// startSong.play();
 
 let map = new Map(ctx, canvasWidth, canvasHeight);
 map.drawFish();
